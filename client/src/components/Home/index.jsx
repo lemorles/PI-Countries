@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCountries } from "../../actions";
+import { NavLink } from "react-router-dom";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -15,11 +16,13 @@ export default function Home() {
       <ul>
         {countries.map((country) => {
           return (
-            <li key={country.id}>
-              <h2>{country.name}</h2>
-              <img src={country.flag} alt={country.name} />
-              <p>{country.region}</p>
-            </li>
+            <NavLink key={country.id} to={`/country/${country.id}`}>
+              <li>
+                <h2>{country.name}</h2>
+                <img src={country.flag} alt={country.name} />
+                <p>{country.region}</p>
+              </li>
+            </NavLink>
           );
         })}
       </ul>
