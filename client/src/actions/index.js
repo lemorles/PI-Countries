@@ -1,10 +1,10 @@
 export const GET_COUNTRIES = "GET_COUNTRIES";
 export const GET_COUNTRY = "GET_COUNTRY";
 
-export const getCountries = () => {
+export const getCountries = (query) => {
   return async (dispatch) => {
     try {
-      const res = await fetch("http://localhost:3001/countries");
+      const res = await fetch(`http://localhost:3001/countries?${query}`);
       const data = await res.json();
 
       return dispatch({ type: GET_COUNTRIES, payload: data });
