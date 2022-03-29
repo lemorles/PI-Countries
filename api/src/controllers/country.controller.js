@@ -1,57 +1,27 @@
-const axios = require("axios");
-require("dotenv").config();
-const { BASEURL_API } = process.env;
-const { Country, Capital, Op } = require("../db");
+const { Country, Op } = require("../db");
 
 // get all countries
 // example: /countries
 const getCountries = async (req, res) => {
+  const limit = 9;
+  let page = parseInt(req.query.page);
+
+  if (!page || typeof page !== "number" || page < 0) page = 1;
+
   try {
     // data in db
-    const countriesDB = await Country.findAll({
+    const countriesDB = await Country.findAndCountAll({
       attributes: ["id", "name", "flag", "region"],
+      offset: page * limit,
+      limit,
     });
-    if (countriesDB.length) return res.json(countriesDB);
 
-    // data in api of rest countries
-    const response = await axios.get(`${BASEURL_API}/all`);
-    const countriesAPI = await Promise.all(
-      response.data.map(async (country) => {
-        await Country.create({
-          id: country.cca3,
-          name: country.name.common,
-          flag: country.flags[0],
-          region: country.region,
-          subregion: country.subregion,
-          area: country.area,
-          population: country.population,
-        });
-
-        let capital;
-        if (!country.capital) {
-          capital = "none";
-          await Capital.create({ name: capital, countryId: country.cca3 });
-        }
-        if (country.capital && country.capital.length === 1) {
-          capital = country.capital[0];
-          await Capital.create({ name: capital, countryId: country.cca3 });
-        }
-        if (country.capital && country.capital.length > 1) {
-          for (let capital of country.capital) {
-            await Capital.create({ name: capital, countryId: country.cca3 });
-          }
-        }
-
-        return {
-          id: country.cca3,
-          name: country.name.common,
-          flag: country.flags[0],
-          region: country.region,
-        };
-      })
-    );
-
-    res.json(countriesAPI);
+    if (countriesDB.count) {
+      res.send({
+        totalPages: Math.ceil(countriesDB.count / limit),
+        results: countriesDB.rows,
+      });
+    }
   } catch (err) {
     console.log(err);
     res.status(500).send({ msg: "Ups! An error has ocurred." });
