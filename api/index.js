@@ -24,51 +24,50 @@ const { BASEURL_API } = process.env;
 const axios = require("axios");
 
 // Syncing all the models at once.
-conn.sync({ force: true }).then(() => {
+conn.sync({ force: true }).then(async () => {
   server.listen(3001, () => {
-    console.log("%s listening at 3001"); // eslint-disable-line no-console
+    console.log("server on port 3001"); // eslint-disable-line no-console
   });
 
-  getData();
+  try {
+    await getData();
+    console.log("db done");
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 const getData = async () => {
-  // data in api of rest countries
+  // save data in db of restcountries API
   const response = await axios.get(`${BASEURL_API}/all`);
-  await Promise.all(
-    // const countriesAPI = await Promise.all(
-    response.data.map(async (country) => {
-      await Country.create({
+  const countries = response.data;
+
+  for (let country of countries) {
+    await Country.findOrCreate({
+      where: {
         id: country.cca3,
         name: country.name.common,
         flag: country.flags[0],
         region: country.region,
-        subregion: country.subregion,
+        subregion: country.subregion || "none",
         area: country.area,
         population: country.population,
-      });
+      },
+    });
 
-      let capital;
-      if (!country.capital) {
-        capital = "none";
+    let capital;
+    if (!country.capital) {
+      capital = "none";
+      await Capital.create({ name: capital, countryId: country.cca3 });
+    }
+    if (country.capital && country.capital.length === 1) {
+      capital = country.capital[0];
+      await Capital.create({ name: capital, countryId: country.cca3 });
+    }
+    if (country.capital && country.capital.length > 1) {
+      for (let capital of country.capital) {
         await Capital.create({ name: capital, countryId: country.cca3 });
       }
-      if (country.capital && country.capital.length === 1) {
-        capital = country.capital[0];
-        await Capital.create({ name: capital, countryId: country.cca3 });
-      }
-      if (country.capital && country.capital.length > 1) {
-        for (let capital of country.capital) {
-          await Capital.create({ name: capital, countryId: country.cca3 });
-        }
-      }
-
-      return {
-        id: country.cca3,
-        name: country.name.common,
-        flag: country.flags[0],
-        region: country.region,
-      };
-    })
-  );
+    }
+  }
 };
