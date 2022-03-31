@@ -1,5 +1,19 @@
 const { Activity, Country } = require("../db");
 
+const getActivities = async (req, res) => {
+  const activities = await Activity.findAll({
+    attributes: ["id", "name"],
+  });
+
+  if (!activities)
+    return res.status(404).send({
+      status: 404,
+      msg: "No tourist activities found!",
+    });
+
+  return res.send(activities);
+};
+
 const createActivity = async (req, res) => {
   const { name, dificulty, duration, season, countriesId } = req.body;
 
@@ -48,4 +62,5 @@ const createActivity = async (req, res) => {
 
 module.exports = {
   createActivity,
+  getActivities,
 };
