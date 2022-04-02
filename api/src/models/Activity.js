@@ -5,11 +5,11 @@ module.exports = (sequelize) => {
     name: {
       type: DataTypes.STRING,
     },
-    dificulty: {
+    difficulty: {
       type: DataTypes.INTEGER,
     },
     duration: {
-      type: DataTypes.TIME,
+      type: DataTypes.INTEGER,
     },
     season: {
       type: DataTypes.ENUM("winter", "summer", "fall", "spring"),

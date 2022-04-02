@@ -1,4 +1,4 @@
-const { Activity, Country } = require("../db");
+const { Activity, Country, Op } = require("../db");
 
 const getActivities = async (req, res) => {
   const activities = await Activity.findAll({
@@ -15,38 +15,53 @@ const getActivities = async (req, res) => {
 };
 
 const createActivity = async (req, res) => {
-  const { name, dificulty, duration, season, countriesId } = req.body;
+  const { name, difficulty, duration, season, countriesName } = req.body;
 
   if (
     !name ||
-    !dificulty ||
+    !difficulty ||
     !duration ||
     !season ||
-    !countriesId ||
-    !countriesId.length
+    !countriesName ||
+    !countriesName.length
   ) {
     return res.status(400).send({ status: 400, msg: "Bad request" });
   }
 
   try {
-    // validate ids countries exists
+    // validate countries exists
     let countries = [];
-    for (let id of countriesId) {
-      const found = await Country.findByPk(id.toUpperCase());
-      if (!found)
+    for (let country of countriesName) {
+      const found = await Country.findOne({
+        where: {
+          name: { [Op.iLike]: `${country}` }, // case insensitive
+        },
+      });
+      if (!found) {
         return res.status(400).send({
           status: 400,
           msg: "Bad request",
         });
+      }
+
       countries.push(found);
     }
 
-    const activity = await Activity.create({
-      name,
-      dificulty,
-      duration,
-      season,
+    const [activity, created] = await Activity.findOrCreate({
+      where: {
+        name,
+        difficulty,
+        duration,
+        season,
+      },
     });
+
+    if (!created) {
+      return res.status(409).send({
+        status: 409,
+        msg: "Tourist activity is already exists.",
+      });
+    }
 
     await activity.addCountries(countries);
 
