@@ -21,6 +21,7 @@ export default function Activity() {
     season: "",
     countries: "",
   });
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     if (e.target.name === "countries") {
@@ -31,19 +32,44 @@ export default function Activity() {
           ...input,
           [e.target.name]: [...input.countries, e.target.value],
         });
+
+        setErrors(
+          validate({
+            ...input,
+            [e.target.name]: [...input.countries, e.target.value],
+          })
+        );
       }
     } else {
       setInput({
         ...input,
         [e.target.name]: e.target.value,
       });
+
+      setErrors(
+        validate({
+          ...input,
+          [e.target.name]: e.target.value,
+        })
+      );
     }
   };
 
   const handleSumbit = (e) => {
     e.preventDefault();
 
-    dispatch(createActivity(input));
+    if (Object.keys(validate(input)).length) {
+      console.log("hay errores");
+      setErrors(
+        validate({
+          ...input,
+          [e.target.name]: e.target.value,
+        })
+      );
+    } else {
+      console.log("sin errores");
+      dispatch(createActivity(input));
+    }
   };
 
   const handleRemoveCountryClick = (e, name) => {
@@ -53,6 +79,13 @@ export default function Activity() {
       ...input,
       countries: input.countries.filter((c) => c !== name),
     });
+
+    setErrors(
+      validate({
+        ...input,
+        countries: input.countries.filter((c) => c !== name),
+      })
+    );
   };
 
   useEffect(() => {
@@ -62,8 +95,12 @@ export default function Activity() {
   return (
     <div className="activity-container">
       <h1>Create Tourist Activity</h1>
-      <form onSubmit={handleSumbit} className="form-container">
-        <label className="label-activity">Tourist Activity</label>
+      <form
+        onSubmit={handleSumbit}
+        autoComplete="off"
+        className="form-container"
+      >
+        <label>Tourist Activity</label>
         <input
           type="text"
           name="name"
@@ -72,7 +109,9 @@ export default function Activity() {
           onChange={handleChange}
           className="input"
         />
-        <label className="label-activity">Difficulty</label>
+        {errors.name && <p className="error">{errors.name}</p>}
+
+        <label>Difficulty</label>
         <input
           type="number"
           name="difficulty"
@@ -81,16 +120,20 @@ export default function Activity() {
           onChange={handleChange}
           className="input"
         />
-        <label className="label-activity">Duration</label>
+        {errors.difficulty && <p className="error">{errors.difficulty}</p>}
+
+        <label>Duration</label>
         <input
           type="number"
           name="duration"
-          placeholder="Enter duration"
+          placeholder="Enter duration in hours"
           value={input.duration}
           onChange={handleChange}
           className="input"
         />
-        <label className="label-activity">Season</label>
+        {errors.duration && <p className="error">{errors.duration}</p>}
+
+        <label>Season</label>
         <select
           name="season"
           value={input.season}
@@ -101,7 +144,9 @@ export default function Activity() {
             <option key={season.id}>{season.name}</option>
           ))}
         </select>
-        <label className="label-activity">Country</label>
+        {errors.season && <p className="error">{errors.season}</p>}
+
+        <label>Country</label>
         <select
           name="countries"
           value={input.countries}
@@ -117,6 +162,8 @@ export default function Activity() {
               </option>
             ))}
         </select>
+        {errors.countries && <p className="error">{errors.countries}</p>}
+
         {input.countries && input.countries.length ? (
           <div className="flags-list">
             {countries
@@ -145,3 +192,35 @@ export default function Activity() {
     </div>
   );
 }
+
+const validate = (input) => {
+  const errors = {};
+
+  if (!input.name) {
+    errors.name = "Tourist Activity is required!";
+  }
+
+  if (!input.difficulty) {
+    errors.difficulty = "Difficulty is required!";
+  } else if (input.difficulty < 1 || input.difficulty > 5) {
+    errors.difficulty = "Difficulty must be between 1 and 5!";
+  }
+
+  if (!input.duration) {
+    errors.duration = "Duration is required!";
+  } else if (input.duration < 1 || input.duration > 24) {
+    errors.duration = "Duration must be between 1 and 24!";
+  }
+
+  if (!input.season) {
+    errors.season = "Season is required!";
+  }
+
+  if (!input.countries) {
+    errors.countries = "Country is required!";
+  } else if (!input.countries.length) {
+    errors.countries = "Country is required!";
+  }
+
+  return errors;
+};
