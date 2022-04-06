@@ -1,0 +1,38 @@
+.country-container {
+  display: grid;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.country-wrapper {
+  display: flex;
+}
+
+.country-img {
+  width: 400px;
+  border-radius: 4px;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin-right: 30px;
+}
+
+.capital-wrapper {
+  display: flex;
+  margin-top: 15px;
+}
+
+.capitals {
+  margin-right: 5px;
+}
+
+.capital-wrapper li {
+  /* margin-right: 10px; */
+}
+
+.list-activity {
+}
+
+.item-activity {
+  margin-bottom: 20px;
+}
