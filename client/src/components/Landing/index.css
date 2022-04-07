@@ -1,0 +1,37 @@
+.landing-container {
+  max-width: 1200px;
+  margin: 100px auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.landing-title {
+  /* margin-top: 150px; */
+  margin-bottom: 0;
+  font-size: 64px;
+  line-height: 5rem;
+}
+
+.landing-text {
+  font-size: 24px;
+  line-height: 2.3rem;
+  margin-top: 16px;
+  margin-bottom: 50px;
+  max-width: 600px;
+}
+
+.landing-button {
+  padding: 13px 20px;
+}
+
+.link {
+  font-size: 17px;
+  color: var(--content);
+  font-weight: bold;
+}
+
+.landing-image {
+  max-width: 450px;
+  opacity: 0.85;
+}

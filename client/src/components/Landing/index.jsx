@@ -1,5 +1,27 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
+import earth from "../../images/earth.svg";
+import "./index.css";
 
 export default function Landing() {
-  return <div>Landing</div>;
+  return (
+    <main className="landing-container">
+      <div>
+        <h1 className="landing-title">
+          Project
+          <br />
+          Countries App
+        </h1>
+        <p className="landing-text">
+          This is an individual project in which all the concepts learned during
+          the Henry's bootcamp will be integrated.
+        </p>
+        <NavLink to={"/home"} className="btn-primary">
+          Enter the project!
+        </NavLink>
+      </div>
+
+      <img src={earth} alt="" className="landing-image" />
+    </main>
+  );
 }
