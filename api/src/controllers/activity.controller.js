@@ -15,23 +15,23 @@ const getActivities = async (req, res) => {
 };
 
 const createActivity = async (req, res) => {
-  const { name, difficulty, duration, season, countriesName } = req.body;
+  const { name, difficulty, duration, season, countries } = req.body;
 
   if (
     !name ||
     !difficulty ||
     !duration ||
     !season ||
-    !countriesName ||
-    !countriesName.length
+    !countries ||
+    !countries.length
   ) {
     return res.status(400).send({ status: 400, msg: "Bad request" });
   }
 
   try {
     // validate countries exists
-    let countries = [];
-    for (let country of countriesName) {
+    let countriesFound = [];
+    for (let country of countries) {
       const found = await Country.findOne({
         where: {
           name: { [Op.iLike]: `${country}` }, // case insensitive
@@ -44,14 +44,14 @@ const createActivity = async (req, res) => {
         });
       }
 
-      countries.push(found);
+      countriesFound.push(found);
     }
 
     const [activity, created] = await Activity.findOrCreate({
       where: {
         name,
-        difficulty,
-        duration,
+        difficulty: parseInt(difficulty),
+        duration: parseInt(duration),
         season,
       },
     });
@@ -63,7 +63,7 @@ const createActivity = async (req, res) => {
       });
     }
 
-    await activity.addCountries(countries);
+    await activity.addCountries(countriesFound);
 
     res.status(201).send({
       status: 201,
