@@ -26,12 +26,12 @@ const axios = require("axios");
 // Syncing all the models at once.
 conn.sync({ force: true }).then(async () => {
   server.listen(3001, () => {
-    console.log("server on port 3001"); // eslint-disable-line no-console
+    console.log("Server on port 3001!"); // eslint-disable-line no-console
   });
 
   try {
     await getData();
-    console.log("db done");
+    console.log("Data saved in db!");
   } catch (err) {
     console.log(err);
   }
@@ -47,7 +47,7 @@ const getData = async () => {
       where: {
         id: country.cca3,
         name: country.name.common,
-        flag: country.flags[0],
+        flag: country.flags.svg,
         region: country.region,
         subregion: country.subregion || "none",
         area: country.area,
@@ -57,16 +57,31 @@ const getData = async () => {
 
     let capital;
     if (!country.capital) {
-      capital = "none";
-      await Capital.create({ name: capital, countryId: country.cca3 });
+      capital = "None";
+      await Capital.findOrCreate({
+        where: {
+          name: capital,
+          countryId: country.cca3,
+        },
+      });
     }
     if (country.capital && country.capital.length === 1) {
       capital = country.capital[0];
-      await Capital.create({ name: capital, countryId: country.cca3 });
+      await Capital.findOrCreate({
+        where: {
+          name: capital,
+          countryId: country.cca3,
+        },
+      });
     }
     if (country.capital && country.capital.length > 1) {
       for (let capital of country.capital) {
-        await Capital.create({ name: capital, countryId: country.cca3 });
+        await Capital.findOrCreate({
+          where: {
+            name: capital,
+            countryId: country.cca3,
+          },
+        });
       }
     }
   }
