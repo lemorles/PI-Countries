@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import logo from "../../images/worldwide.png";
+import logo from "../../images/earth.svg";
 import github from "../../images/github.svg";
 import linkedin from "../../images/linkedin.svg";
 import "./index.css";
