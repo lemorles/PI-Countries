@@ -29,14 +29,7 @@
 }
 
 .capitals {
-  margin-right: 5px;
-}
-
-.capital-wrapper li {
-  /* margin-right: 10px; */
-}
-
-.list-activity {
+  display: flex;
 }
 
 .item-activity {
