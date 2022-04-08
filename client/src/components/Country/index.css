@@ -9,17 +9,23 @@
 }
 
 .country-img {
-  width: 400px;
+  width: 450px;
+  height: 250px;
   border-radius: 4px;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
+  object-position: center;
+  object-fit: cover;
   margin-right: 30px;
+}
+
+.country-details {
+  font-size: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .capital-wrapper {
   display: flex;
-  margin-top: 15px;
 }
 
 .capitals {
@@ -35,4 +41,8 @@
 
 .item-activity {
   margin-bottom: 20px;
+}
+
+.error-header {
+  margin-top: 60px;
 }

@@ -8,7 +8,7 @@ import "./index.css";
 export default function Country() {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { country, loading } = useSelector((state) => state);
+  const { country, loading, error } = useSelector((state) => state);
 
   useEffect(() => {
     dispatch(getCountry(id));
@@ -16,24 +16,38 @@ export default function Country() {
 
   if (loading) return <Loader />;
 
+  if (error && error.msg)
+    return (
+      <div className="country-container error-header">
+        <h1>
+          Ups.. <br /> {error.msg}
+        </h1>
+        <NavLink to="/home" className="btn-primary">
+          Back to home
+        </NavLink>
+      </div>
+    );
+
   return (
     <div className="country-container">
       {/* <p>{country.id}</p> */}
       <h1>{country.name}</h1>
       <div className="country-wrapper">
         <img src={country.flag} alt={country.name} className="country-img" />
-        <div>
+        <div className="country-details">
           <ul className="capital-wrapper">
             <p className="capitals">Capital:</p>
             {country.capitals &&
               country.capitals.map((cap) => {
-                return <li key={cap.id}>{cap.name}</li>;
+                return <li key={cap.id}>{`${cap.name},`}</li>;
               })}
           </ul>
           <p>Region: {country.region}</p>
           <p>Subregion: {country.subregion}</p>
           <p>
-            Area: {country.area} km<sup>2</sup>
+            <span>
+              Area: {country.area} km<sup>2</sup>
+            </span>
           </p>
           <p>Population: {country.population}</p>
         </div>
