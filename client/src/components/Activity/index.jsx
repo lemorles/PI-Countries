@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createActivity, getCountries } from "../../actions";
+import Loader from "../Loader";
+import Toast from "../Toast";
 import "./index.css";
 
 const season = [
@@ -12,7 +14,7 @@ const season = [
 ];
 
 export default function Activity() {
-  const countries = useSelector((state) => state.countries);
+  const { countries, activity, loading, error } = useSelector((state) => state);
   const dispatch = useDispatch();
   const [input, setInput] = useState({
     name: "",
@@ -59,7 +61,6 @@ export default function Activity() {
     e.preventDefault();
 
     if (Object.keys(validate(input)).length) {
-      console.log("hay errores");
       setErrors(
         validate({
           ...input,
@@ -67,8 +68,14 @@ export default function Activity() {
         })
       );
     } else {
-      console.log("sin errores");
       dispatch(createActivity(input));
+      setInput({
+        name: "",
+        difficulty: "",
+        duration: "",
+        season: "",
+        countries: "",
+      });
     }
   };
 
@@ -91,6 +98,8 @@ export default function Activity() {
   useEffect(() => {
     dispatch(getCountries());
   }, [dispatch]);
+
+  if (loading) return <Loader />;
 
   return (
     <div className="activity-container">
@@ -189,6 +198,12 @@ export default function Activity() {
           className="btn-primary"
         />
       </form>
+      {error && error.msg && (
+        <Toast title="Error" desc={error.msg} type={"error"} />
+      )}
+      {activity && activity.msg && (
+        <Toast title="Success" desc={activity.msg} type={"success"} />
+      )}
     </div>
   );
 }

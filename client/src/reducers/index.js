@@ -11,11 +11,6 @@ import {
   CREATE_ACTIVITY_PENDING,
   CREATE_ACTIVITY_SUCCESS,
   CREATE_ACTIVITY_ERROR,
-  FILTER_BY_NAME_PENDING,
-  FILTER_BY_NAME_SUCCESS,
-  FILTER_BY_NAME_ERROR,
-  FILTER_BY_REGION,
-  FILTER_BY_ACTIVITY,
   SORT_BY_NAME,
   SORT_BY_POPULATION,
 } from "../actions";
@@ -24,9 +19,10 @@ const initialState = {
   countries: [],
   country: {},
   activities: [],
+  activity: {},
   filteredCountries: [],
   loading: false,
-  error: {},
+  error: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -37,13 +33,16 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        countries: action.payload,
-        filteredCountries: action.payload,
+        error: null,
+        countries: [...action.payload],
+        filteredCountries: [...action.payload],
       };
     case GET_COUNTRIES_ERROR:
       return {
         ...state,
         loading: false,
+        countries: [],
+        filteredCountries: [],
         error: action.payload,
       };
     case GET_COUNTRY_PENDING:
@@ -52,12 +51,14 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
+        error: null,
         country: action.payload,
       };
     case GET_COUNTRY_ERROR:
       return {
         ...state,
         loading: false,
+        country: [],
         error: action.payload,
       };
     case GET_ACTIVITIES_PENDING:
@@ -72,15 +73,17 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
+        activities: [],
         error: action.payload,
       };
     case CREATE_ACTIVITY_PENDING:
-      return { ...state, loading: true };
+      return { ...state, loading: true, activity: {}, error: null };
     case CREATE_ACTIVITY_SUCCESS:
       return {
         ...state,
         loading: false,
-        // activities: action.payload,
+        error: null,
+        activity: action.payload,
       };
     case CREATE_ACTIVITY_ERROR:
       return {
@@ -88,102 +91,65 @@ const reducer = (state = initialState, action) => {
         loading: false,
         error: action.payload,
       };
-    case FILTER_BY_NAME_PENDING:
-      return { ...state, loading: true };
-    case FILTER_BY_NAME_SUCCESS:
-      return {
-        ...state,
-        filteredCountries: action.payload,
-      };
-    case FILTER_BY_NAME_ERROR:
-      return {
-        ...state,
-        loading: false,
-        error: action.payload,
-      };
-    case FILTER_BY_REGION:
-      if (action.payload === "") {
-        return { ...state, filteredCountries: state.countries };
-      } else {
-        // const newCountries = state.filteredCountries;
-        const newCountries = [...state.countries];
-
-        const filterCountries = newCountries.filter((c) => {
-          return c.region.toLowerCase().includes(action.payload.toLowerCase());
-        });
-
-        return {
-          ...state,
-          filteredCountries: filterCountries,
-        };
-      }
-    case FILTER_BY_ACTIVITY:
-      if (action.payload === "") {
-        return { ...state, filteredCountries: state.countries };
-      } else {
-        // const newCountries = state.filteredCountries;
-        const newCountries = [...state.countries];
-
-        const filterCountries = newCountries.filter((c) => {
-          return (
-            c.activities &&
-            c.activities.length &&
-            c.activities.find((a) => {
-              return a.name
-                .toLowerCase()
-                .includes(action.payload.toLowerCase());
-            })
-          );
-        });
-
-        return {
-          ...state,
-          filteredCountries: filterCountries,
-        };
-      }
     case SORT_BY_NAME:
       if (action.payload === "") {
-        return { ...state, filteredCountries: state.countries };
+        return { ...state, filteredCountries: [...state.countries] };
       }
 
-      const newCountries = [...state.filteredCountries];
+      const newCountries = state.filteredCountries;
+
+      // if (action.payload === "ASC") {
+      //   return {
+      //     ...state,
+      //     filteredCountries: newCountries.sort((a, b) => {
+      //       if (a.name > b.name) {
+      //         return 1;
+      //       }
+      //       if (a.name < b.name) {
+      //         return -1;
+      //       }
+
+      //       return 0;
+      //     }),
+      //   };
+      // }
+      //
+      // // DESC
+      // return {
+      //   ...state,
+      //   filteredCountries: newCountries.sort((a, b) => {
+      //     if (a.name < b.name) {
+      //       return 1;
+      //     }
+      //     if (a.name > b.name) {
+      //       return -1;
+      //     }
+
+      //     return 0;
+      //   }),
+      // };
 
       if (action.payload === "ASC") {
         return {
           ...state,
-          filteredCountries: newCountries.sort((a, b) => {
-            if (a.name > b.name) {
-              return 1;
-            }
-            if (a.name < b.name) {
-              return -1;
-            }
-
-            return 0;
-          }),
+          filteredCountries: newCountries.sort((a, b) =>
+            a.name.localeCompare(b.name)
+          ),
         };
       }
-
       // DESC
       return {
         ...state,
-        filteredCountries: newCountries.sort((a, b) => {
-          if (a.name < b.name) {
-            return 1;
-          }
-          if (a.name > b.name) {
-            return -1;
-          }
-
-          return 0;
-        }),
+        filteredCountries: newCountries.sort((a, b) =>
+          b.name.localeCompare(a.name)
+        ),
       };
     case SORT_BY_POPULATION:
       if (action.payload === "") {
-        return { ...state, filteredCountries: state.countries };
+        return { ...state, filteredCountries: [...state.countries] };
       }
 
-      const newCountriess = [...state.filteredCountries];
+      const newCountriess = state.filteredCountries;
 
       if (action.payload === "ASC") {
         return {

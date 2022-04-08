@@ -14,21 +14,19 @@ export const CREATE_ACTIVITY_PENDING = "CREATE_ACTIVITY_PENDING";
 export const CREATE_ACTIVITY_SUCCESS = "CREATE_ACTIVITY_SUCCESS";
 export const CREATE_ACTIVITY_ERROR = "CREATE_ACTIVITY_ERROR";
 
-export const FILTER_BY_NAME_PENDING = "FILTER_BY_NAME_PENDING";
-export const FILTER_BY_NAME_SUCCESS = "FILTER_BY_NAME_SUCCESS";
-export const FILTER_BY_NAME_ERROR = "FILTER_BY_NAME_ERROR";
-
-export const FILTER_BY_REGION = "FILTER_BY_REGION";
-export const FILTER_BY_ACTIVITY = "FILTER_BY_ACTIVITY";
 export const SORT_BY_NAME = "SORT_BY_NAME";
 export const SORT_BY_POPULATION = "SORT_BY_POPULATION";
 
-export const getCountries = () => {
+const BASE_URL = "http://localhost:3001";
+
+export const getCountries = (name = "", region = "", activity = "") => {
+  const query = `?name=${name}&region=${region}&activity=${activity}`;
+
   return async (dispatch) => {
     try {
       dispatch({ type: GET_COUNTRIES_PENDING });
 
-      const res = await fetch(`http://localhost:3001/countries`);
+      const res = await fetch(`${BASE_URL}/countries${query}`);
       const data = await res.json();
 
       if (res.ok) {
@@ -48,7 +46,7 @@ export const getCountry = (id) => {
     try {
       dispatch({ type: GET_COUNTRY_PENDING });
 
-      const res = await fetch(`http://localhost:3001/countries/${id}`);
+      const res = await fetch(`${BASE_URL}/countries/${id}`);
       const data = await res.json();
 
       if (res.status === 200) {
@@ -68,7 +66,7 @@ export const getActivities = () => {
     try {
       dispatch({ type: GET_ACTIVITIES_PENDING });
 
-      const res = await fetch(`http://localhost:3001/activity`);
+      const res = await fetch(`${BASE_URL}/activity`);
       const data = await res.json();
 
       if (res.status === 200) {
@@ -94,7 +92,7 @@ export const createActivity = (input) => {
         body: JSON.stringify(input),
       };
 
-      const res = await fetch("http://localhost:3001/activity", options);
+      const res = await fetch(`${BASE_URL}/activity`, options);
       const data = await res.json();
 
       if (res.ok) {
@@ -106,36 +104,6 @@ export const createActivity = (input) => {
       console.log(err);
       dispatch({ type: CREATE_ACTIVITY_ERROR, payload: err });
     }
-  };
-};
-
-export const filterCountriesByName = (query = "") => {
-  return async (dispatch) => {
-    try {
-      dispatch({ type: FILTER_BY_NAME_PENDING });
-
-      const res = await fetch(`http://localhost:3001/countries?${query}`);
-      const data = await res.json();
-
-      dispatch({ type: FILTER_BY_NAME_SUCCESS, payload: data });
-    } catch (err) {
-      console.log(err);
-      return dispatch({ type: FILTER_BY_NAME_ERROR, payload: err });
-    }
-  };
-};
-
-export const filterCountriesByRegion = (value) => {
-  return {
-    type: FILTER_BY_REGION,
-    payload: value,
-  };
-};
-
-export const filterCountriesByActivity = (value) => {
-  return {
-    type: FILTER_BY_ACTIVITY,
-    payload: value,
   };
 };
 
