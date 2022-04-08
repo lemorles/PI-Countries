@@ -180,14 +180,17 @@ export default function Home() {
               backgroundRepeat: "no-repeat",
               width: "100px",
               backgroundColor: "#00e472",
-              // border: "1px solid blue",
-              // padding: "10px 13px",
             }}
+            title="Search"
             className="btn-primary"
           />
         </div>
 
-        <button onClick={handleClickReset} className="btn-secondary reset" />
+        <button
+          onClick={handleClickReset}
+          title="Reset filters"
+          className="btn-secondary reset"
+        />
       </form>
 
       <div className="filter">
