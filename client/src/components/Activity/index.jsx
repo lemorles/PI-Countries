@@ -213,6 +213,8 @@ const validate = (input) => {
 
   if (!input.name) {
     errors.name = "Tourist Activity is required!";
+  } else if (!/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/.test(input.name)) {
+    errors.name = "Tourist Activity must be only letters or numbers!";
   }
 
   if (!input.difficulty) {
