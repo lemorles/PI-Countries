@@ -1,0 +1,35 @@
+.toast-container {
+  display: flex;
+  align-items: center;
+  position: fixed;
+  top: 40px;
+  right: 20px;
+  height: 30px;
+  width: 280px;
+  padding: 20px;
+  border-radius: 4px;
+  color: var(--body);
+  transition: 0.3s ease;
+  z-index: 14;
+}
+
+.error-bg {
+  background-color: var(--error);
+}
+
+.success-bg {
+  background-color: var(--green);
+}
+
+.toast-container img {
+  margin-right: 10px;
+}
+
+@keyframes toast-position {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
