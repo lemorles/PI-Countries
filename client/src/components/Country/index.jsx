@@ -35,15 +35,15 @@ export default function Country() {
       <div className="country-wrapper">
         <img src={country.flag} alt={country.name} className="country-img" />
         <div className="country-details">
-          <p className="capitals">
-            Capital:&nbsp;
+          <div className="capitals">
+            <p>Capital:&nbsp;</p>
             <ul className="capital-wrapper">
               {country.capitals &&
                 country.capitals.map((cap) => {
                   return <li key={cap.id}>{`${cap.name}`}&nbsp;</li>;
                 })}
             </ul>
-          </p>
+          </div>
           <p>Region: {country.region}</p>
           <p>Subregion: {country.subregion}</p>
           <p>
