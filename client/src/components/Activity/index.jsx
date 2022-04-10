@@ -128,6 +128,8 @@ export default function Activity() {
           value={input.difficulty}
           onChange={handleChange}
           className="input"
+          min="1"
+          max="5"
         />
         {errors.difficulty && <p className="error">{errors.difficulty}</p>}
 
@@ -139,6 +141,7 @@ export default function Activity() {
           value={input.duration}
           onChange={handleChange}
           className="input"
+          min="1"
         />
         {errors.duration && <p className="error">{errors.duration}</p>}
 
