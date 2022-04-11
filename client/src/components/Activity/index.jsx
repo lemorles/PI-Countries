@@ -201,11 +201,9 @@ export default function Activity() {
           className="btn-primary"
         />
       </form>
-      {error && error.msg && (
-        <Toast title="Error" desc={error.msg} type={"error"} />
-      )}
+      {error && error.msg && <Toast title={error.msg} type={"error"} />}
       {activity && activity.msg && (
-        <Toast title="Success" desc={activity.msg} type={"success"} />
+        <Toast title={activity.msg} type={"success"} />
       )}
     </div>
   );
