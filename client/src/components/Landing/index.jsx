@@ -8,9 +8,9 @@ export default function Landing() {
     <main className="landing-container">
       <div>
         <h1 className="landing-title">
-          Project
-          <br />
           Countries App
+          <br />
+          Project
         </h1>
         <p className="landing-text">
           This is an individual project in which all the concepts learned during
@@ -21,7 +21,7 @@ export default function Landing() {
         </NavLink>
       </div>
 
-      <img src={earth} alt="" className="landing-image" />
+      <img src={earth} alt="earth" className="landing-image" />
     </main>
   );
 }
