@@ -79,7 +79,9 @@
 
 .pagination-button-container {
   display: flex;
+  justify-content: center;
   gap: 0 6px;
+  margin-bottom: 30px;
 }
 
 .card:hover {
