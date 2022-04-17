@@ -1,0 +1,53 @@
+.wrapper {
+  padding: 0 20px;
+}
+
+.wrapper h1 {
+  font-size: 24px;
+}
+
+.wrapperForm {
+  display: grid;
+}
+
+.wrapperForm label {
+  font-size: 16px;
+}
+.wrapperForm input,
+select {
+  margin-bottom: 30px;
+}
+
+.flags {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.flag {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.flag img {
+  width: 150px;
+  height: 100px;
+  object-fit: cover;
+  object-position: center;
+  margin-right: 10px;
+}
+
+.wrapperForm p {
+  margin-top: -25px;
+  margin-bottom: 30px;
+}
+
+@media screen and (min-width: 600px) {
+  .wrapper h1 {
+    font-size: 32px;
+  }
+  .wrapperForm {
+    max-width: 600px;
+  }
+}

@@ -3,7 +3,7 @@ import { NavLink, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getCountry } from "../../actions";
 import Loader from "../Loader";
-import "./index.css";
+import styles from "./index.module.css";
 
 export default function Country() {
   const { id } = useParams();
@@ -18,7 +18,7 @@ export default function Country() {
 
   if (error && error.msg)
     return (
-      <div className="country-container error-header">
+      <div className={styles.wrapper}>
         <h1>
           Ups.. <br /> {error.msg}
         </h1>
@@ -29,15 +29,14 @@ export default function Country() {
     );
 
   return (
-    <div className="country-container">
-      {/* <p>{country.id}</p> */}
+    <div className={styles.wrapper}>
       <h1>{country.name}</h1>
-      <div className="country-wrapper">
-        <img src={country.flag} alt={country.name} className="country-img" />
-        <div className="country-details">
-          <div className="capitals">
+      <div className={styles.wrapperCountry}>
+        <img src={country.flag} alt={country.name} />
+        <div>
+          <div className={styles.capital}>
             <p>Capital:&nbsp;</p>
-            <ul className="capital-wrapper">
+            <ul>
               {country.capitals &&
                 country.capitals.map((cap) => {
                   return <li key={cap.id}>{`${cap.name}`}&nbsp;</li>;
@@ -61,7 +60,7 @@ export default function Country() {
           <ul className="list-activity">
             {country.activities.map((act) => {
               return (
-                <li key={act.id} className="item-activity">
+                <li key={act.id} className={styles.activity}>
                   <p>ACTIVITY {act.id}</p>
                   <p>Name: {capitalizeFirstLetter(act.name)}</p>
                   <p>Difficulty: {act.difficulty}</p>

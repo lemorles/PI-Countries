@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import check from "../../images/check.svg";
 import error from "../../images/error.svg";
-import "./index.css";
+import styles from "./index.module.css";
 
 export default function Toast({ title, type }) {
   const [show, setShow] = useState(true);
@@ -9,7 +9,7 @@ export default function Toast({ title, type }) {
   useEffect(() => {
     const interval = setInterval(() => {
       setShow(false);
-    }, 3000);
+    }, 30000);
 
     return () => {
       clearInterval(interval);
@@ -18,7 +18,11 @@ export default function Toast({ title, type }) {
 
   return (
     show && (
-      <div className={`toast-container toast-position ${type}-bg`}>
+      <div
+        className={`${styles.wrapper} ${styles.toastPosition} ${
+          type === "success" ? styles.success : styles.error
+        }`}
+      >
         <img
           src={type === "error" ? error : check}
           alt={type === "error" ? error : check}

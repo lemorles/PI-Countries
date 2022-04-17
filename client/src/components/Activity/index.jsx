@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createActivity, getCountries } from "../../actions";
 import Loader from "../Loader";
 import Toast from "../Toast";
-import "./index.css";
+import styles from "./index.module.css";
 
 const season = [
   { id: 0, name: "Select season" },
@@ -102,12 +102,12 @@ export default function Activity() {
   if (loading) return <Loader />;
 
   return (
-    <div className="activity-container">
+    <div className={styles.wrapper}>
       <h1>Create Tourist Activity</h1>
       <form
         onSubmit={handleSumbit}
         autoComplete="off"
-        className="form-container"
+        className={styles.wrapperForm}
       >
         <label>Tourist Activity</label>
         <input
@@ -116,7 +116,6 @@ export default function Activity() {
           placeholder="Enter tourist activity"
           value={input.name}
           onChange={handleChange}
-          className="input"
         />
         {errors.name && <p className="error">{errors.name}</p>}
 
@@ -127,7 +126,6 @@ export default function Activity() {
           placeholder="Select difficulty"
           value={input.difficulty}
           onChange={handleChange}
-          className="input"
           min="1"
           max="5"
         />
@@ -140,18 +138,12 @@ export default function Activity() {
           placeholder="Enter duration in hours"
           value={input.duration}
           onChange={handleChange}
-          className="input"
           min="1"
         />
         {errors.duration && <p className="error">{errors.duration}</p>}
 
         <label>Season</label>
-        <select
-          name="season"
-          value={input.season}
-          onChange={handleChange}
-          className="input"
-        >
+        <select name="season" value={input.season} onChange={handleChange}>
           {season.map((season) => (
             <option key={season.id}>{season.name}</option>
           ))}
@@ -163,7 +155,6 @@ export default function Activity() {
           name="countries"
           value={input.countries}
           onChange={handleChange}
-          className="input"
         >
           <option value="">Select Countries</option>
           {countries &&
@@ -177,12 +168,12 @@ export default function Activity() {
         {errors.countries && <p className="error">{errors.countries}</p>}
 
         {input.countries && input.countries.length ? (
-          <div className="flags-list">
+          <div className={styles.flags}>
             {countries
               .filter((c) => input.countries.indexOf(c.name) !== -1)
               .map((country) => {
                 return (
-                  <div key={country.id} className="flags-item">
+                  <div key={country.id} className={styles.flag}>
                     <img src={country.flag} alt={country.name} />
                     <button
                       onClick={(e) => handleRemoveCountryClick(e, country.name)}

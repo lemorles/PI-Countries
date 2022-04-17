@@ -9,7 +9,7 @@ import {
 import { Link, useSearchParams } from "react-router-dom";
 import Loader from "../Loader";
 import imgSearch from "../../images/search.svg";
-import "./index.css";
+import styles from "./index.module.css";
 
 const LIMIT = 9;
 
@@ -149,27 +149,27 @@ export default function Home() {
 
   const renderError = () => {
     return (
-      <div className="country-container error-header">
+      <>
         <h1>
           Ups.. <br /> {error.msg}
         </h1>
-      </div>
+      </>
     );
   };
 
   if (loading) return <Loader />;
 
   return (
-    <div className="container">
-      <form onSubmit={handleSubmitSearch} className="search">
-        <div className="search-container">
+    <div className={styles.wrapper}>
+      <form onSubmit={handleSubmitSearch} className={styles.wrapperSearchForm}>
+        <div className={styles.wrapperSearch}>
           <input
             type="text"
             name="name"
             value={search}
             placeholder="Search"
             onChange={handleChangeSearch}
-            className="inputSearch"
+            className={styles.search}
           />
           <input
             type="submit"
@@ -178,23 +178,22 @@ export default function Home() {
               background: `url(${imgSearch})`,
               backgroundPosition: "center",
               backgroundRepeat: "no-repeat",
-              width: "100px",
-              backgroundColor: "#00e472",
+              padding: "10px 20px",
+              cursor: "pointer",
             }}
             title="Search"
-            className="btn-primary"
           />
         </div>
 
         <button
           onClick={handleClickReset}
           title="Reset filters"
-          className="btn-secondary reset"
+          className={styles.reset}
         />
       </form>
 
-      <div className="filter">
-        <label className="input-container">
+      <div className={styles.wrapperFilter}>
+        <label>
           Filter by region
           <select name="region" value={filters.region} onChange={handleChange}>
             <option value="">All</option>
@@ -206,7 +205,7 @@ export default function Home() {
           </select>
         </label>
 
-        <label className="input-container">
+        <label>
           Filter by activity
           <select
             name="activity"
@@ -221,7 +220,7 @@ export default function Home() {
           </select>
         </label>
 
-        <label className="input-container">
+        <label>
           Sort by name
           <select
             name="sortByName"
@@ -234,7 +233,7 @@ export default function Home() {
           </select>
         </label>
 
-        <label className="input-container">
+        <label>
           Sort by population
           <select
             name="sortByPopulation"
@@ -252,29 +251,25 @@ export default function Home() {
         renderError()
       ) : (
         <>
-          <ul className="list-cards">
+          <ul className={styles.wrapperCards}>
             {countries &&
               applyPagination(countries).map((country) => {
                 return (
                   <Link
                     key={country.id}
                     to={`/country/${country.id}`}
-                    className="card"
+                    className={styles.card}
                   >
-                    <li className="card-container">
-                      <img
-                        src={country.flag}
-                        alt={country.name}
-                        className="card-img"
-                      />
-                      <h2 className="name">{country.name}</h2>
-                      <p className="region">{country.region}</p>
+                    <li>
+                      <img src={country.flag} alt={country.name} />
+                      <h2>{country.name}</h2>
+                      <p>{country.region}</p>
                     </li>
                   </Link>
                 );
               })}
           </ul>
-          <ul className="pagination-button-container">
+          <ul className={styles.wrapperPagination}>
             {countries &&
               createArrPages().map((page) => {
                 return (

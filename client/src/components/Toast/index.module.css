@@ -1,4 +1,4 @@
-.toast-container {
+.wrapper {
   display: flex;
   align-items: center;
   position: fixed;
@@ -13,19 +13,19 @@
   z-index: 14;
 }
 
-.error-bg {
+.error {
   background-color: var(--error);
 }
 
-.success-bg {
+.success {
   background-color: var(--green);
 }
 
-.toast-container img {
+.wrapper img {
   margin-right: 10px;
 }
 
-@keyframes toast-position {
+@keyframes toastPosition {
   from {
     transform: translateX(100%);
   }

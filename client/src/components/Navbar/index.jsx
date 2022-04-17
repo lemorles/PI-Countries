@@ -3,26 +3,26 @@ import { NavLink, useLocation } from "react-router-dom";
 import logo from "../../images/earth.svg";
 import github from "../../images/github.svg";
 import linkedin from "../../images/linkedin.svg";
-import "./index.css";
+import styles from "./index.module.css";
 
 export default function Navbar() {
   const { pathname } = useLocation();
 
   return (
-    <nav className="nav">
-      <p className="nav-title">
-        <img src={logo} alt="logo" className="logo" />
-        <NavLink to={"/home"} className="link-white">
+    <nav className={styles.nav}>
+      <div className={styles.wrapperLogo}>
+        <img src={logo} alt="logo" className={styles.logo} />
+        <NavLink to={"/home"} className={styles.link}>
           CountriesApp
         </NavLink>
-      </p>
+      </div>
       {pathname === "/home" && (
-        <NavLink to={"/activity"} className="btn-secondary">
+        <NavLink to={"/activity"} className={`${styles.navlink} btn-secondary`}>
           Create Activity
         </NavLink>
       )}
       {pathname.includes("/country") && (
-        <NavLink to={"/activity"} className="btn-secondary">
+        <NavLink to={"/activity"} className={`${styles.navlink} btn-secondary`}>
           Create Activity
         </NavLink>
       )}
@@ -33,7 +33,7 @@ export default function Navbar() {
             target="_blank"
             rel="noreferrer"
           >
-            <img src={github} alt="github" className="social-icon" />
+            <img src={github} alt="github" className={styles.socialIcon} />
           </a>
 
           <a
@@ -41,7 +41,7 @@ export default function Navbar() {
             target="_blank"
             rel="noreferrer"
           >
-            <img src={linkedin} alt="linkedin" className="social-icon" />
+            <img src={linkedin} alt="linkedin" className={styles.socialIcon} />
           </a>
         </div>
       )}
