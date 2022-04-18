@@ -20,12 +20,12 @@
 const server = require("./src/app.js");
 const { conn, Country, Capital } = require("./src/db.js");
 require("dotenv").config();
-const { BASEURL_API } = process.env;
+const { BASEURL_API, PORT } = process.env;
 const axios = require("axios");
 
 // Syncing all the models at once.
 conn.sync({ force: true }).then(async () => {
-  server.listen(3001, () => {
+  server.listen(PORT, () => {
     console.log("Server on port 3001!"); // eslint-disable-line no-console
   });
 

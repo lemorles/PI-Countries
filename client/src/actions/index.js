@@ -17,7 +17,7 @@ export const CREATE_ACTIVITY_ERROR = "CREATE_ACTIVITY_ERROR";
 export const SORT_BY_NAME = "SORT_BY_NAME";
 export const SORT_BY_POPULATION = "SORT_BY_POPULATION";
 
-const BASE_URL = "http://localhost:3001";
+const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3001";
 
 export const getCountries = (name = "", region = "", activity = "") => {
   const query = `?name=${name}&region=${region}&activity=${activity}`;
