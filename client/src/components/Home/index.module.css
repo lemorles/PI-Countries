@@ -32,7 +32,6 @@
   justify-content: space-between;
   flex-wrap: wrap;
   margin: 20px 0 50px;
-  /* gap: 20px; */
 }
 
 .wrapperFilter label {
@@ -93,6 +92,10 @@
   .wrapperCards {
     grid-template-columns: repeat(2, 1fr);
     justify-content: space-between;
+  }
+
+  .wrapperFilter {
+    gap: 0 20px;
   }
 
   .card:hover {
